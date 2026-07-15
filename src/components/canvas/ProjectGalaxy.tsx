@@ -32,9 +32,15 @@ function ProjectPlanet({ position, color, speed, name }: PlanetProps) {
       <Sphere 
         ref={meshRef} 
         args={[1, 32, 32]}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-        className="cursor-pointer"
+        onPointerOver={(e) => {
+          e.stopPropagation(); // Prevents hover events from bubbling through to other 3D objects
+          setHovered(true);
+          document.body.style.cursor = 'pointer'; // Safely changes your cursor to a pointer
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          document.body.style.cursor = 'default'; // Safely resets your cursor back to default
+        }}
       >
         <MeshDistortMaterial
           color={hovered ? "#f43f5e" : color}
